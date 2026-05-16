@@ -2,75 +2,33 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Простой видеочат</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>video</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <!-- Экран входа -->
-    <div id="login-screen" class="screen">
-        <div class="login-container">
-            <h1>🎥 Видеочат</h1>
-            <p class="subtitle">Общайтесь с друзьями</p>
-            <form id="join-form">
-                <div class="input-group">
-                    <label for="username">Ваше имя:</label>
-                    <input type="text" id="username" 
-                           placeholder="Введите имя" 
-                           maxlength="20" 
-                           required
-                           autocomplete="off">
-                </div>
-                <div class="input-group">
-                    <label for="room-code">Код комнаты:</label>
-                    <input type="text" id="room-code" 
-                           placeholder="Например: secret123" 
-                           maxlength="20" 
-                           required
-                           autocomplete="off"
-                           pattern="[a-zA-Z0-9_-]+">
-                    <small>Только буквы, цифры, тире и подчеркивания</small>
-                </div>
-                <button type="submit" class="btn-primary">
-                    Создать / Войти
-                </button>
-            </form>
-            <div id="error-message" class="error" style="display: none;"></div>
-        </div>
-    </div>
-
-    <!-- Экран комнаты -->
-    <div id="room-screen" class="screen" style="display: none;">
-        <div class="room-header">
-            <div class="room-info">
-                <span class="room-label">Комната:</span>
-                <span id="current-room" class="room-code-display"></span>
-            </div>
-            <button id="leave-btn" class="btn-leave">Выйти</button>
+    <div id="app">
+        <!-- Экран входа -->
+        <div id="login-screen" class="screen active">
+            <input type="text" id="username" placeholder="имя" maxlength="20" autocomplete="off" spellcheck="false">
+            <input type="text" id="room-code" placeholder="код" maxlength="20" autocomplete="off" spellcheck="false">
+            <button id="join-btn">войти</button>
+            <span id="error-text"></span>
         </div>
 
-        <!-- Контейнер для видео -->
-        <div class="videos-container">
-            <div class="videos-grid" id="videos-grid">
-                <!-- Локальное видео -->
-                <div class="video-wrapper local-video">
-                    <video id="local-video" autoplay muted playsinline></video>
-                    <div class="video-label">Вы</div>
-                    <div class="controls-overlay">
-                        <button id="toggle-mic" class="control-btn mic-on" title="Выключить микрофон">
-                            🎤
-                        </button>
-                        <button id="toggle-camera" class="control-btn camera-on" title="Выключить камеру">
-                            📹
-                        </button>
-                    </div>
+        <!-- Экран комнаты -->
+        <div id="room-screen" class="screen">
+            <div id="top-bar">
+                <span id="room-label"></span>
+                <div id="top-controls">
+                    <button id="screen-btn" class="ctrl-btn">screen</button>
+                    <button id="mic-btn" class="ctrl-btn on">mic</button>
+                    <button id="cam-btn" class="ctrl-btn on">cam</button>
+                    <button id="leave-btn" class="ctrl-btn">exit</button>
                 </div>
             </div>
-        </div>
-
-        <!-- Индикатор состояния -->
-        <div id="connection-status" class="connection-status">
-            Подключение к серверу...
+            <div id="videos"></div>
+            <div id="status"></div>
         </div>
     </div>
 
