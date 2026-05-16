@@ -64,6 +64,11 @@ io.on('connection', (socket) => {
             }
         }
     });
+    socket.on('chat-message', (data) => {
+        const { roomCode, username, message } = data;
+        // Отправляем всем в комнате кроме отправителя
+        socket.to(roomCode).emit('chat-message', { username, message });
+    });
 
     // Очистка старых записей
     if (now > clientLimit.resetTime) {
@@ -75,6 +80,10 @@ io.on('connection', (socket) => {
 
     socket.on('join-room', (data) => {
         const { roomCode, username } = data;
+        socket.to(roomCode).emit('user-joined', {
+            id: socket.id,
+            username
+        });
         
         // Валидация входных данных
         if (!roomCode || !username || 
