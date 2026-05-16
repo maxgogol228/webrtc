@@ -53,6 +53,18 @@ io.on('connection', (socket) => {
     }
     clientLimit.count++;
 
+    // В server.js, внутри io.on('connection', ...) добавь:
+    socket.on('get-username', (userId) => {
+        // Ищем пользователя в комнате
+        for (const [roomCode, room] of rooms) {
+            const user = room.users.get(userId);
+            if (user) {
+                socket.emit('username', { id: userId, username: user.username });
+                break;
+            }
+        }
+    });
+
     // Очистка старых записей
     if (now > clientLimit.resetTime) {
         clientLimit.count = 1;
