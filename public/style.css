@@ -24,13 +24,15 @@ html, body {
     display: none;
     width: 100%;
     height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .screen.active {
     display: flex;
 }
 
-/* Экран входа */
 #login-screen {
     flex-direction: column;
     align-items: center;
@@ -67,7 +69,6 @@ html, body {
     font-size: 14px;
     cursor: pointer;
     font-weight: 500;
-    transition: opacity 0.2s;
 }
 
 #join-btn:hover {
@@ -80,14 +81,13 @@ html, body {
     min-height: 14px;
 }
 
-/* Экран комнаты */
 #room-screen {
-    position: relative;
     flex-direction: column;
     background: #050505;
+    position: relative;
+    overflow: hidden;
 }
 
-/* Сетка видео */
 #videos {
     flex: 1;
     display: flex;
@@ -96,9 +96,10 @@ html, body {
     justify-content: center;
     gap: 4px;
     padding: 4px;
-    padding-top: 36px;
-    overflow: hidden;
+    padding-top: 40px;
     min-height: 0;
+    overflow: hidden;
+    z-index: 1;
 }
 
 .video-container {
@@ -106,49 +107,57 @@ html, body {
     background: #111;
     border-radius: 4px;
     overflow: hidden;
-    min-width: 0;
+    min-width: 200px;
+    min-height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 1 1 auto;
+    max-width: 100%;
 }
 
 .video-container video {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    background: #1a1a1a;
 }
 
 .video-container .name-tag {
     position: absolute;
-    bottom: 4px;
-    left: 4px;
-    background: rgba(0, 0, 0, 0.75);
+    bottom: 6px;
+    left: 6px;
+    background: rgba(0, 0, 0, 0.8);
     color: #ccc;
-    padding: 2px 8px;
+    padding: 3px 8px;
     border-radius: 2px;
     font-size: 11px;
     pointer-events: none;
+    z-index: 2;
 }
 
-/* Своё видео (маленькое окно) */
 #local-container {
     position: absolute;
-    top: 40px;
+    top: 44px;
     right: 12px;
-    width: 160px;
-    aspect-ratio: 4/3;
+    width: 180px;
+    height: 135px;
     background: #1a1a1a;
     border-radius: 4px;
     overflow: hidden;
     z-index: 10;
     border: 1px solid #333;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.6);
-    cursor: pointer;
-    transition: width 0.2s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.8);
+    cursor: grab;
+    transition: box-shadow 0.2s;
+}
+
+#local-container:active {
+    cursor: grabbing;
 }
 
 #local-container:hover {
-    width: 200px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.9);
 }
 
 #local-video {
@@ -156,20 +165,9 @@ html, body {
     height: 100%;
     object-fit: cover;
     transform: scaleX(-1);
+    background: #111;
 }
 
-#local-name {
-    position: absolute;
-    bottom: 2px;
-    left: 4px;
-    background: rgba(0, 0, 0, 0.7);
-    color: #4ade80;
-    padding: 1px 6px;
-    border-radius: 2px;
-    font-size: 10px;
-}
-
-/* Верхняя панель */
 #top-bar {
     position: absolute;
     top: 0;
@@ -179,10 +177,11 @@ html, body {
     justify-content: space-between;
     align-items: center;
     padding: 6px 12px;
-    background: rgba(0,0,0,0.7);
+    background: rgba(10,10,10,0.9);
     backdrop-filter: blur(10px);
     z-index: 20;
-    height: 34px;
+    height: 36px;
+    border-bottom: 1px solid #1a1a1a;
 }
 
 #room-label {
@@ -197,78 +196,82 @@ html, body {
 
 .ctrl-btn {
     padding: 4px 10px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 3px;
-    color: #aaa;
+    color: #888;
     font-size: 11px;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .ctrl-btn:hover {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.12);
     color: #fff;
 }
 
 .ctrl-btn.on {
     color: #4ade80;
     border-color: rgba(74, 222, 128, 0.3);
-    background: rgba(74, 222, 128, 0.1);
+    background: rgba(74, 222, 128, 0.12);
 }
 
 .ctrl-btn.off {
     color: #ff4444;
-    border-color: rgba(255, 68, 68, 0.3);
-    background: rgba(255, 68, 68, 0.1);
+    border-color: rgba(255, 68, 68, 0.2);
+    background: rgba(255, 68, 68, 0.08);
 }
 
-/* Чат */
 #chat-panel {
     position: absolute;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 80px;
     z-index: 15;
     display: flex;
-    transition: transform 0.25s ease;
+    flex-direction: row;
+    transform: translateX(-232px);
+    transition: transform 0.2s ease;
 }
 
-#chat-panel.collapsed {
-    transform: translateY(-50%) translateX(calc(-100% + 40px));
+#chat-panel.open {
+    transform: translateX(0);
 }
 
 #chat-toggle {
-    writing-mode: vertical-rl;
-    background: rgba(0,0,0,0.8);
-    border: 1px solid #333;
+    width: 32px;
+    background: rgba(20,20,20,0.95);
+    border: 1px solid #222;
     border-left: none;
     border-radius: 0 4px 4px 0;
-    padding: 12px 6px;
     cursor: pointer;
-    font-size: 11px;
-    color: #888;
-    letter-spacing: 2px;
-    user-select: none;
-    transition: color 0.2s;
-    width: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    user-select: none;
+    flex-shrink: 0;
 }
 
-#chat-toggle:hover {
+#chat-toggle span {
+    color: #888;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+#chat-toggle:hover span {
     color: #fff;
 }
 
 #chat-body {
-    width: 220px;
-    background: rgba(0,0,0,0.85);
-    border: 1px solid #333;
+    width: 240px;
+    background: rgba(20,20,20,0.95);
+    border: 1px solid #222;
     border-left: none;
+    border-radius: 0 4px 4px 0;
     display: flex;
     flex-direction: column;
-    height: 300px;
+    height: 280px;
 }
 
 #chat-messages {
@@ -277,18 +280,17 @@ html, body {
     padding: 8px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
+    font-size: 12px;
 }
 
 .chat-msg {
-    font-size: 11px;
     line-height: 1.4;
     word-break: break-word;
 }
 
 .chat-msg .author {
     color: #888;
-    margin-right: 4px;
 }
 
 .chat-msg .text {
@@ -296,14 +298,13 @@ html, body {
 }
 
 .chat-msg.system {
-    color: #555;
-    text-align: center;
-    font-size: 10px;
+    color: #444;
+    font-size: 11px;
 }
 
 #chat-input-wrap {
     display: flex;
-    border-top: 1px solid #333;
+    border-top: 1px solid #222;
     padding: 6px;
     gap: 4px;
 }
@@ -324,67 +325,72 @@ html, body {
 }
 
 #chat-send {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.08);
     border: 1px solid #333;
     color: #aaa;
-    padding: 6px 10px;
+    padding: 4px 10px;
     border-radius: 2px;
     font-size: 11px;
     cursor: pointer;
 }
 
 #chat-send:hover {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.15);
     color: #fff;
 }
 
-/* Список участников */
 #users-panel {
     position: absolute;
     right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 80px;
     z-index: 15;
     display: flex;
-    flex-direction: row-reverse;
-    transition: transform 0.25s ease;
+    flex-direction: row;
+    transform: translateX(200px);
+    transition: transform 0.2s ease;
 }
 
-#users-panel.collapsed {
-    transform: translateY(-50%) translateX(calc(100% - 40px));
+#users-panel.open {
+    transform: translateX(0);
 }
 
 #users-toggle {
-    writing-mode: vertical-rl;
-    background: rgba(0,0,0,0.8);
-    border: 1px solid #333;
+    width: 32px;
+    background: rgba(20,20,20,0.95);
+    border: 1px solid #222;
     border-right: none;
     border-radius: 4px 0 0 4px;
-    padding: 12px 6px;
     cursor: pointer;
-    font-size: 11px;
-    color: #888;
-    letter-spacing: 2px;
-    user-select: none;
-    transition: color 0.2s;
-    width: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    user-select: none;
+    flex-shrink: 0;
+    order: 1;
 }
 
-#users-toggle:hover {
+#users-toggle span {
+    color: #888;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+#users-toggle:hover span {
     color: #fff;
 }
 
 #users-list {
-    width: 180px;
-    background: rgba(0,0,0,0.85);
-    border: 1px solid #333;
+    width: 200px;
+    background: rgba(20,20,20,0.95);
+    border: 1px solid #222;
     border-right: none;
-    padding: 10px;
+    border-radius: 4px 0 0 4px;
+    padding: 12px;
     overflow-y: auto;
-    max-height: 300px;
+    max-height: 280px;
+    order: 0;
 }
 
 .user-item {
@@ -392,7 +398,7 @@ html, body {
     align-items: center;
     gap: 8px;
     padding: 6px 0;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid #1a1a1a;
     font-size: 12px;
     color: #ccc;
 }
@@ -413,8 +419,7 @@ html, body {
     background: #60a5fa;
 }
 
-.user-item .user-name {
-    flex: 1;
+.user-name {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -424,14 +429,13 @@ html, body {
     color: #60a5fa;
 }
 
-/* Статус */
 #status {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 3px 12px;
-    background: rgba(0,0,0,0.7);
+    padding: 4px 12px;
+    background: rgba(10,10,10,0.8);
     color: #555;
     font-size: 10px;
     text-align: center;
@@ -442,11 +446,11 @@ html, body {
 #status.warn { color: #f59e0b; }
 #status.err { color: #ff4444; }
 
-/* Скролл */
 * {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
+
 *::-webkit-scrollbar {
     display: none;
 }
