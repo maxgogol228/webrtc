@@ -65,9 +65,10 @@ io.on('connection', (socket) => {
         }
     });
     socket.on('chat-message', (data) => {
-        const { roomCode, username, message } = data;
-        // Отправляем всем в комнате кроме отправителя
-        socket.to(roomCode).emit('chat-message', { username, message });
+        socket.to(data.roomCode).emit('chat-message', {
+            username: data.username,
+            message: data.message
+        });
     });
 
     // Очистка старых записей
