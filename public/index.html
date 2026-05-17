@@ -8,7 +8,6 @@
 </head>
 <body>
     <div id="app">
-        <!-- Экран входа -->
         <div id="login-screen" class="screen active">
             <input type="text" id="username" placeholder="имя" maxlength="20" autocomplete="off" spellcheck="false">
             <input type="text" id="room-code" placeholder="код" maxlength="20" autocomplete="off" spellcheck="false">
@@ -16,31 +15,25 @@
             <span id="error-text"></span>
         </div>
 
-        <!-- Экран комнаты -->
         <div id="room-screen" class="screen">
-            <!-- Видео сетка -->
             <div id="videos"></div>
 
-            <!-- Своё видео (маленькое) -->
             <div id="local-container">
                 <video id="local-video" autoplay muted playsinline></video>
-                <div id="local-name"></div>
             </div>
 
-            <!-- Верхняя панель -->
             <div id="top-bar">
                 <span id="room-label"></span>
                 <div id="top-controls">
                     <button id="screen-btn" class="ctrl-btn">screen</button>
-                    <button id="mic-btn" class="ctrl-btn on">mic</button>
-                    <button id="cam-btn" class="ctrl-btn on">cam</button>
+                    <button id="mic-btn" class="ctrl-btn off">mic</button>
+                    <button id="cam-btn" class="ctrl-btn off">cam</button>
                     <button id="leave-btn" class="ctrl-btn">exit</button>
                 </div>
             </div>
 
-            <!-- Чат (свёрнут) -->
-            <div id="chat-panel" class="collapsed">
-                <div id="chat-toggle">chat</div>
+            <div id="chat-panel">
+                <div id="chat-toggle"><span>chat</span></div>
                 <div id="chat-body">
                     <div id="chat-messages"></div>
                     <div id="chat-input-wrap">
@@ -50,14 +43,12 @@
                 </div>
             </div>
 
-            <!-- Список участников (свёрнут) -->
-            <div id="users-panel" class="collapsed">
-                <div id="users-toggle">users</div>
+            <div id="users-panel">
+                <div id="users-toggle"><span>users</span></div>
                 <div id="users-list"></div>
             </div>
 
-            <!-- Статус -->
-            <div id="status"></div>
+            <div id="status">offline</div>
         </div>
     </div>
 
